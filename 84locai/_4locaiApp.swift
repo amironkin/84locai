@@ -1,23 +1,19 @@
-//
-//  _4locaiApp.swift
-//  84locai
-//
-//  Created by amironkin on 30.04.2026.
-//
-
 import SwiftUI
 import SwiftData
 
 @main
 struct _4locaiApp: App {
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            ChatSession.self,
+            ChatMessage.self,
+            KnowledgeDocument.self,
+            DocumentChunk.self,
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            return try ModelContainer(for: schema, configurations: [config])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }

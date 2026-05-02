@@ -1,66 +1,74 @@
-//
-//  ContentView.swift
-//  84locai
-//
-//  Created by amironkin on 30.04.2026.
-//
-
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var chunks: [DocumentChunk]
+
+    @State private var llm = LLMEngine()
+    @State private var embedder = EmbeddingEngine()
+    @State private var selectedTab: Tab = .chat
+
+    private var rag: RAGEngine { RAGEngine(embedder: embedder) }
+
+    enum Tab: Int {
+        case chat, models, knowledge
+    }
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
+        TabView(selection: $selectedTab) {
+
+            // MARK: Chat
+            Tab("Чат", systemImage: "bubble.left.and.bubble.right.fill", value: .chat) {
+                ChatView(
+                    vm: ChatViewModel(llm: llm, rag: makeRAG(), modelContext: modelContext),
+                    llm: llm
+                )
             }
-#if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
+
+            // MARK: Models
+            Tab("Модели", systemImage: "cpu.fill", value: .models) {
+                ModelListView(llm: llm)
             }
-        } detail: {
-            Text("Select an item")
+
+            // MARK: Knowledge
+            Tab("Знания", systemImage: "books.vertical.fill", value: .knowledge) {
+                KnowledgeBaseView(
+                    vm: KnowledgeViewModel(rag: makeRAG(), modelContext: modelContext)
+                )
+            }
+        }
+        .tint(.appPrimary)
+        .preferredColorScheme(.dark)
+        .onAppear {
+            configureTabBarAppearance()
+            // Preload chunks into vector store
+            makeRAG().refreshStore(chunks: chunks)
+        }
+        .onChange(of: chunks.count) { _, _ in
+            makeRAG().refreshStore(chunks: chunks)
         }
     }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
+    private func makeRAG() -> RAGEngine {
+        let engine = RAGEngine(embedder: embedder)
+        engine.refreshStore(chunks: chunks)
+        return engine
     }
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
+    private func configureTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(Color.appSurface)
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(Color.appTextMuted)
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor(Color.appTextMuted)
+        ]
+        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(Color.appPrimary)
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor(Color.appPrimary)
+        ]
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }
