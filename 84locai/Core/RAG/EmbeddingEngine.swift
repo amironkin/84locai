@@ -4,6 +4,8 @@ import MLXEmbedders
 import MLXLMCommon
 import MLXHuggingFace
 import MLXLLM
+import Hub
+import Tokenizers
 
 enum EmbedderError: LocalizedError {
     case notLoaded
