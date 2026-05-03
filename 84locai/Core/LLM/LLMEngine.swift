@@ -102,9 +102,7 @@ final class LLMEngine {
         activeModelId = model.id
 
         do {
-            container = try await LLMModelFactory.shared.loadContainer(
-                configuration: model.configuration
-            )
+            container = try await Hub.loadContainer(configuration: model.configuration)
             state = .ready(modelId: model.id)
         } catch {
             state = .error(error.localizedDescription)
