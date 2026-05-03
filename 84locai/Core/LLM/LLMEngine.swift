@@ -103,8 +103,8 @@ final class LLMEngine {
 
         do {
             container = try await LLMModelFactory.shared.loadContainer(
-                from: #hubDownloader(),
-                using: #huggingFaceTokenizerLoader(),
+                from: HubClient(),
+                using: HuggingFaceTokenizerLoader(),
                 configuration: model.configuration
             ) { [weak self] progress in
                 Task { @MainActor [weak self] in
