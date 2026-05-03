@@ -24,7 +24,7 @@ struct ModelListView: View {
                         HStack {
                             Text("Используется: \(usedGB)")
                                 .font(.appCaption)
-                                .foregroundStyle(.appTextMuted)
+                                .foregroundStyle(Color.appTextMuted)
                             Spacer()
                         }
                         .padding(.horizontal, Spacing.md)
@@ -73,10 +73,10 @@ struct ModelListView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(statusTitle)
                     .font(.appHeadline)
-                    .foregroundStyle(.appTextPrimary)
+                    .foregroundStyle(Color.appTextPrimary)
                 Text(statusSubtitle)
                     .font(.appCaption)
-                    .foregroundStyle(.appTextSecondary)
+                    .foregroundStyle(Color.appTextSecondary)
             }
 
             Spacer()
@@ -132,7 +132,7 @@ struct ModelListView: View {
         case .ready(let id):
             return ModelInfo.catalog.first(where: { $0.id == id })?.displayName ?? "Модель готова"
         case .generating: return "Генерация..."
-        case .error(let msg): return "Ошибка"
+        case .error(_): return "Ошибка"
         }
     }
 
