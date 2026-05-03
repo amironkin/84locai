@@ -31,8 +31,10 @@ final class EmbeddingEngine {
         container = try await EmbedderModelFactory.shared.loadContainer(
             from: HubClient(),
             using: HuggingFaceTokenizerLoader(),
-            configuration: modelConfig
-        ) { _ in }
+            configuration: modelConfig,
+            useLatest: false,
+            progressHandler: { _ in }
+        )
         isLoaded = true
     }
 

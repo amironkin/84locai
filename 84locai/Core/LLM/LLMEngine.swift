@@ -105,12 +105,14 @@ final class LLMEngine {
             container = try await LLMModelFactory.shared.loadContainer(
                 from: HubClient(),
                 using: HuggingFaceTokenizerLoader(),
-                configuration: model.configuration
-            ) { [weak self] progress in
-                Task { @MainActor [weak self] in
-                    self?.state = .downloading(progress: progress.fractionCompleted)
+                configuration: model.configuration,
+                useLatest: false,
+                progressHandler: { [weak self] progress in
+                    Task { @MainActor [weak self] in
+                        self?.state = .downloading(progress: progress.fractionCompleted)
+                    }
                 }
-            }
+            )
             state = .ready(modelId: model.id)
         } catch {
             state = .error(error.localizedDescription)
