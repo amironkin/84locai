@@ -2,6 +2,7 @@ import Foundation
 import MLX
 import MLXEmbedders
 import MLXLMCommon
+import MLXLLM
 
 enum EmbedderError: LocalizedError {
     case notLoaded
@@ -27,8 +28,8 @@ final class EmbeddingEngine {
 
     func load() async throws {
         container = try await EmbedderModelFactory.shared.loadContainer(
-            from: EmbedderModelFactory.shared.downloader,
-            using: EmbedderModelFactory.shared.tokenizerLoader,
+            from: LLMModelFactory.shared.downloader,
+            using: LLMModelFactory.shared.tokenizerLoader,
             configuration: modelConfig,
             useLatest: false
         )
