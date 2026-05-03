@@ -102,10 +102,7 @@ final class LLMEngine {
 
         do {
             container = try await LLMModelFactory.shared.loadContainer(
-                from: LLMModelFactory.shared.downloader,
-                using: LLMModelFactory.shared.tokenizerLoader,
-                configuration: model.configuration,
-                useLatest: false
+                configuration: model.configuration
             ) { [weak self] progress in
                 Task { @MainActor [weak self] in
                     self?.state = .downloading(progress: progress.fractionCompleted)
