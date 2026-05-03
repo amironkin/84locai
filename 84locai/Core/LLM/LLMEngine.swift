@@ -3,6 +3,8 @@ import MLXLLM
 import MLXLMCommon
 import MLX
 import MLXHuggingFace
+import Hub
+import Tokenizers
 
 // MARK: - Available Models Catalog
 struct ModelInfo: Identifiable, Hashable {
@@ -102,7 +104,14 @@ final class LLMEngine {
         activeModelId = model.id
 
         do {
-            container = try await Hub.loadContainer(configuration: model.configuration)
+            let downloader = #hubDownloader()
+            let tokenizerLoader = #huggingFaceTokenizerLoader()
+            
+            container = try await #huggingFaceLoadModelContainer(
+                from: downloader,
+                using: tokenizerLoader,
+                configuration: model.configuration
+            )
             state = .ready(modelId: model.id)
         } catch {
             state = .error(error.localizedDescription)
