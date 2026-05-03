@@ -28,15 +28,8 @@ final class EmbeddingEngine {
     private let modelConfig = ModelConfiguration(id: "intfloat/multilingual-e5-small")
 
     func load() async throws {
-        let downloader = #hubDownloader()
-        let tokenizerLoader = #huggingFaceTokenizerLoader()
-
-        container = try await EmbedderModelFactory.shared.loadContainer(
-            from: downloader,
-            using: tokenizerLoader,
-            configuration: modelConfig,
-            useLatest: false,
-            progressHandler: { _ in }
+        container = try await #huggingFaceLoadModelContainer(
+            configuration: modelConfig
         )
         isLoaded = true
     }
@@ -46,7 +39,7 @@ final class EmbeddingEngine {
         guard let container else { throw EmbedderError.notLoaded }
         guard !texts.isEmpty else { return [] }
 
-        return try await container.perform { context in
+        return await container.perform { context in
             // Tokenize each input
             let tokenizer = context.tokenizer
 
