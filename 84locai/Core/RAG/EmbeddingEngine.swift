@@ -28,9 +28,12 @@ final class EmbeddingEngine {
     private let modelConfig = ModelConfiguration(id: "intfloat/multilingual-e5-small")
 
     func load() async throws {
+        let downloader = #hubDownloader()
+        let tokenizerLoader = #huggingFaceTokenizerLoader()
+
         container = try await EmbedderModelFactory.shared.loadContainer(
-            from: HubClient(),
-            using: HuggingFaceTokenizerLoader(),
+            from: downloader,
+            using: tokenizerLoader,
             configuration: modelConfig,
             useLatest: false,
             progressHandler: { _ in }

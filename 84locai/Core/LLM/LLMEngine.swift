@@ -102,9 +102,12 @@ final class LLMEngine {
         activeModelId = model.id
 
         do {
+            let downloader = #hubDownloader()
+            let tokenizerLoader = #huggingFaceTokenizerLoader()
+
             container = try await LLMModelFactory.shared.loadContainer(
-                from: HubClient(),
-                using: HuggingFaceTokenizerLoader(),
+                from: downloader,
+                using: tokenizerLoader,
                 configuration: model.configuration,
                 useLatest: false,
                 progressHandler: { [weak self] progress in
