@@ -3,8 +3,6 @@ import MLXLLM
 import MLXLMCommon
 import MLX
 import MLXHuggingFace
-import Hub
-import Tokenizers
 
 // MARK: - Available Models Catalog
 struct ModelInfo: Identifiable, Hashable {
@@ -104,13 +102,8 @@ final class LLMEngine {
         activeModelId = model.id
 
         do {
-            container = try await #huggingFaceLoadModelContainer(
-                configuration: model.configuration,
-                progressHandler: { [weak self] progress in
-                    Task { @MainActor [weak self] in
-                        self?.state = .downloading(progress: progress.fractionCompleted)
-                    }
-                }
+            container = try await LLMModelFactory.shared.loadContainer(
+                configuration: model.configuration
             )
             state = .ready(modelId: model.id)
         } catch {
