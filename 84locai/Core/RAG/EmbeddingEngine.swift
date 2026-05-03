@@ -3,8 +3,6 @@ import MLX
 import MLXEmbedders
 import MLXLMCommon
 import MLXHuggingFace
-import Hub
-import Tokenizers
 
 enum EmbedderError: LocalizedError {
     case notLoaded
@@ -29,12 +27,9 @@ final class EmbeddingEngine {
     private let modelConfig = ModelConfiguration(id: "intfloat/multilingual-e5-small")
 
     func load() async throws {
-        let downloader = #hubDownloader()
-        let tokenizerLoader = #huggingFaceTokenizerLoader()
-        
-        container = try await Hub.loadEmbedderContainer(
-            from: downloader,
-            using: tokenizerLoader,
+        container = try await EmbedderModelFactory.shared.loadContainer(
+            from: HubApi(),
+            using: HuggingFaceTokenizerLoader(),
             configuration: modelConfig
         )
         isLoaded = true

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1C058A032FA79D310061E938 /* Hub in Frameworks */ = {isa = PBXBuildFile; productRef = 1C058A012FA79D310061E938 /* Hub */; };
-		1C058A042FA79D310061E938 /* Tokenizers in Frameworks */ = {isa = PBXBuildFile; productRef = 1C058A022FA79D310061E938 /* Tokenizers */; };
 		1C0589FA2FA79D310061E938 /* MLXHuggingFace in Frameworks */ = {isa = PBXBuildFile; productRef = 1C0589F92FA79D310061E938 /* MLXHuggingFace */; };
 		1CFC41642FA3F97700D1B023 /* MLXEmbedders in Frameworks */ = {isa = PBXBuildFile; productRef = 1CFC41632FA3F97700D1B023 /* MLXEmbedders */; };
 		1CFC41662FA3F97700D1B023 /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 1CFC41652FA3F97700D1B023 /* MLXLLM */; };
@@ -60,8 +58,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C058A032FA79D310061E938 /* Hub in Frameworks */,
-				1C058A042FA79D310061E938 /* Tokenizers in Frameworks */,
 				1CFC41662FA3F97700D1B023 /* MLXLLM in Frameworks */,
 				1CFC41642FA3F97700D1B023 /* MLXEmbedders in Frameworks */,
 				1C0589FA2FA79D310061E938 /* MLXHuggingFace in Frameworks */,
@@ -133,8 +129,6 @@
 			);
 			name = 84locai;
 			packageProductDependencies = (
-				1C058A012FA79D310061E938 /* Hub */,
-				1C058A022FA79D310061E938 /* Tokenizers */,
 				1CFC41632FA3F97700D1B023 /* MLXEmbedders */,
 				1CFC41652FA3F97700D1B023 /* MLXLLM */,
 				1C0589F92FA79D310061E938 /* MLXHuggingFace */,
@@ -661,16 +655,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1CFC41622FA3F97700D1B023 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
 			productName = MLXLLM;
-		};
-		1C058A012FA79D310061E938 /* Hub */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1CFC41622FA3F97700D1B023 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = Hub;
-		};
-		1C058A022FA79D310061E938 /* Tokenizers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1CFC41622FA3F97700D1B023 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = Tokenizers;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
