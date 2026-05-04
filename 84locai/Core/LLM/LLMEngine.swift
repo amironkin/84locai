@@ -3,7 +3,7 @@ import MLXLLM
 import MLXLMCommon
 import MLX
 import MLXHuggingFace
-import MLXLMHuggingFace
+import MLXLMHFAPI
 
 // MARK: - Available Models Catalog
 struct ModelInfo: Identifiable, Hashable {
