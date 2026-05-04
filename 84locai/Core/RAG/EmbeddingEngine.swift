@@ -28,8 +28,8 @@ final class EmbeddingEngine {
 
     func load() async throws {
         container = try await EmbedderModelFactory.shared.loadContainer(
-            from: HuggingFaceHubApi(),
-            using: HuggingFaceTokenizerLoader(),
+            from: .huggingFace,
+            using: .huggingFace,
             configuration: modelConfig
         )
         isLoaded = true
