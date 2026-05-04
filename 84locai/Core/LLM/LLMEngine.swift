@@ -104,7 +104,7 @@ final class LLMEngine {
 
         do {
             container = try await LLMModelFactory.shared.loadContainer(
-                from: HubClient(),
+                from: HubClient.default,
                 configuration: model.configuration
             )
             state = .ready(modelId: model.id)

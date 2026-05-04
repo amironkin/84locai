@@ -29,7 +29,7 @@ final class EmbeddingEngine {
 
     func load() async throws {
         container = try await EmbedderModelFactory.shared.loadContainer(
-            from: HubClient(),
+            from: HubClient.default,
             configuration: modelConfig
         )
         isLoaded = true
