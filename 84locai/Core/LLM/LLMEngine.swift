@@ -103,6 +103,8 @@ final class LLMEngine {
 
         do {
             container = try await LLMModelFactory.shared.loadContainer(
+                from: HuggingFaceHubApi(),
+                using: HuggingFaceTokenizerLoader(),
                 configuration: model.configuration
             )
             state = .ready(modelId: model.id)
