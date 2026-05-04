@@ -3,7 +3,7 @@ import MLX
 import MLXEmbedders
 import MLXLMCommon
 import MLXHuggingFace
-import MLXLMHuggingFace
+import MLXLMHFAPI
 
 enum EmbedderError: LocalizedError {
     case notLoaded
